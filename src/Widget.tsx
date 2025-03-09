@@ -4,7 +4,6 @@ import { EchoboxIcon } from "./components/EchoboxIcon";
 
 export type WidgetOptions = {
   position?: "bottom-right" | "bottom-left" | "top-right" | "top-left";
-  primaryColor?: string;
   onSubmit?: (data: any) => Promise<void>;
 };
 
@@ -16,7 +15,6 @@ export class EchoBoxWidget {
   constructor(options: WidgetOptions = {}) {
     this.options = {
       position: "bottom-right",
-      primaryColor: "#FF7846",
       ...options,
     };
 
@@ -108,11 +106,7 @@ export class EchoBoxWidget {
     };
 
     render(
-      <App
-        onClose={() => this.close()}
-        onSubmit={handleSubmit}
-        primaryColor={this.options.primaryColor}
-      />,
+      <App onClose={() => this.close()} onSubmit={handleSubmit} />,
       this.container
     );
   }

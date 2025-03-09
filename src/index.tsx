@@ -26,7 +26,6 @@ document.addEventListener("DOMContentLoaded", () => {
       position:
         (element.getAttribute("data-echo-box-position") as any) ||
         "bottom-right",
-      primaryColor: element.getAttribute("data-echo-box-color") || "#FF7846",
     };
 
     new EchoBoxWidget(options);
