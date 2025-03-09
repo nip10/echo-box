@@ -5,14 +5,26 @@
   "type": "module",
   "author": "Diogo Cardoso <hi@diogocardoso.dev>",
   "license": "MIT",
-  "main": "dist/echo-box.js",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./style.css": "./dist/style.css"
+  },
   "files": [
     "dist"
   ],
+  "sideEffects": false,
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "clean": "rm -rf dist/*"
+    "clean": "rm -rf dist/*",
+    "release": "pnpm run build && changeset publish"
   },
   "dependencies": {
     "@hookform/resolvers": "^4.1.3",

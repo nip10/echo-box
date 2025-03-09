@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { feedbackSchema, type FeedbackSchema } from "../schemas/feedback";
 
@@ -28,7 +28,7 @@ export function useFeedbackForm({
     },
   });
 
-  const handleFormSubmit = async (data: FeedbackSchema) => {
+  const handleFormSubmit: SubmitHandler<FeedbackSchema> = async (data) => {
     try {
       await onSubmit(data);
       onSuccess?.();
