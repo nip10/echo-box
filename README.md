@@ -2,29 +2,22 @@
 
 EchoBox is a lightweight, customizable feedback widget for any website. Built with Preact and TypeScript, it provides an elegant interface for collecting user feedback without adding bloat to your site.
 
-![EchoBox Screenshot](https://via.placeholder.com/800x400.png?text=EchoBox+Widget)
-
 ## Features
 
-- **Multiple Feedback Types:** Collect issues, ideas, and general feedback
-- **Screenshot Capture:** Optional screenshot functionality (requires html2canvas)
-- **Lightweight:** Small footprint with minimal dependencies
-- **Customizable:** Adjust position, colors, and more
-- **Responsive:** Works well on mobile and desktop
-- **Easy Integration:** Multiple installation methods
+- **Multiple Feedback Types:** Collect bug reports, feature ideas, and general feedback
+- **Screenshot Capture:** Built-in screenshot functionality for bug reports
+- **Modern UI:** Clean, responsive design with smooth animations
+- **Lightweight:** Built with Preact for minimal bundle size
+- **Fully Typed:** Written in TypeScript for better development experience
+- **Customizable:** Easy to customize appearance and behavior
+- **Accessible:** Built with accessibility in mind
 
 ## Installation
 
-### Via NPM
-
 ```bash
 npm install echo-box
-```
-
-### Via CDN
-
-```html
-<script src="https://cdn.example.com/echo-box.js"></script>
+# or
+pnpm add echo-box
 ```
 
 ## Usage
@@ -32,98 +25,84 @@ npm install echo-box
 ### Basic Usage
 
 ```javascript
-// When using via NPM
-import { EchoBoxWidget } from 'echo-box';
+import { EchoBox } from 'echo-box';
 
-const widget = new EchoBoxWidget({
+// Initialize the widget
+const widget = EchoBox.init({
   position: 'bottom-right',
-  primaryColor: '#FF7846',
   onSubmit: async (data) => {
     // Handle the feedback data
     console.log('Feedback received:', data);
 
-    // Example of sending to a backend API
-    await fetch('https://your-api.com/feedback', {
+    // Example: Send to your API
+    await fetch('https://api.example.com/feedback', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
     });
   }
 });
+
+// Control the widget programmatically
+widget.open();  // Open the widget
+widget.close(); // Close the widget
 ```
 
 ### Via Script Tag
 
 ```html
-<script src="https://cdn.example.com/echo-box.js"></script>
+<script src="https://unpkg.com/echo-box/dist/echo-box.js"></script>
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    EchoBox.init({
-      position: 'bottom-right',
-      primaryColor: '#FF7846',
-      onSubmit: async (data) => {
-        // Handle the feedback
-        console.log('Feedback received:', data);
-      }
-    });
+  const widget = EchoBox.init({
+    position: 'bottom-right',
+    onSubmit: async (data) => {
+      console.log('Feedback received:', data);
+    }
   });
 </script>
 ```
 
-### Auto Initialization
+### Auto-initialization
 
-You can also automatically initialize the widget by adding data attributes to any element:
+You can also automatically initialize the widget using data attributes:
 
 ```html
 <div
   data-echo-box-auto
   data-echo-box-position="bottom-right"
-  data-echo-box-color="#FF7846"
 ></div>
 ```
 
-## Configuration Options
+## Configuration
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `position` | string | 'bottom-right' | Widget position: 'bottom-right', 'bottom-left', 'top-right', 'top-left' |
-| `primaryColor` | string | '#FF7846' | Primary color for widget styling |
-| `onSubmit` | function | undefined | Callback function when feedback is submitted |
+| `position` | string | 'bottom-right' | Widget position ('bottom-right', 'bottom-left', 'top-right', 'top-left') |
+| `onSubmit` | function | - | Callback function when feedback is submitted |
 
-## Methods
+## Feedback Data Structure
 
-The EchoBox widget instance exposes the following methods:
+The feedback data object has the following structure:
 
-- `open()`: Opens the feedback widget
-- `close()`: Closes the feedback widget
-- `setOptions(options)`: Updates the widget options
-
-## Feedback Data Format
-
-The data passed to the `onSubmit` callback has the following structure:
-
-```javascript
-{
-  type: 'issue' | 'idea' | 'other', // Type of feedback
-  content: string,                  // Feedback text content
-  screenshot: string | null,        // Base64-encoded screenshot (if captured)
-  timestamp: string                 // ISO timestamp of when feedback was submitted
+```typescript
+interface FeedbackData {
+  type: 'report' | 'idea' | 'other';  // Type of feedback
+  content: string;                     // Feedback text content
+  screenshot?: string | null;          // Base64 screenshot (only for bug reports)
 }
 ```
 
-## Screenshot Functionality
+## Methods
 
-The screenshot functionality requires [html2canvas](https://html2canvas.hertzen.com/). If you want to use this feature, make sure to include html2canvas in your project:
+The widget instance provides the following methods:
 
-```html
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-```
+- `open()`: Opens the feedback widget
+- `close()`: Closes the feedback widget
+- `setOptions(options)`: Updates widget options
 
 ## Browser Support
 
-EchoBox supports all modern browsers including:
+EchoBox supports all modern browsers:
 - Chrome
 - Firefox
 - Safari
@@ -131,18 +110,39 @@ EchoBox supports all modern browsers including:
 
 ## Development
 
-To build the project locally:
+This is a monorepo managed with pnpm workspaces. The project is structured as follows:
+
+```
+.
+├── packages/
+│   └── echo-box/      # Core package
+└── apps/
+    ├── react/         # React demo
+    └── vanilla/       # Vanilla JS demo
+```
+
+To get started with development:
 
 ```bash
+# Install pnpm if you haven't already
+npm install -g pnpm
+
 # Install dependencies
-npm install
+pnpm install
 
-# Build for development
-npm run dev
+# Start development server
+pnpm dev
 
-# Build for production
-npm run build:all
+# Build all packages
+pnpm build
+
+# Run the demo app
+pnpm demo
 ```
+
+## Acknowledgements
+
+This project was inspired by [Feedback Fish](https://feedback.fish), a fantastic feedback widget service. While EchoBox is a different implementation, we appreciate their innovative approach to user feedback collection.
 
 ## License
 
